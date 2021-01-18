@@ -22,11 +22,12 @@ char 	*ft_strdup(char *str)
 
 	if ((ret = (char*)malloc((ft_strlen(str) + 1) * sizeof(char))) == 0)
 		exit_error();
-	while(i < ft_strlen(str))
+	while(str[i])
 	{
 		ret[i] = str[i];
 		i++;
 	}
+	ret[i] = '\0';
 	return(ret);
 }
 
@@ -39,10 +40,10 @@ void	exit_error()
 void	clear(t_cmd	*cmd)
 {
 	t_cmd *tmp;
-	int	i = 0;
 
 	while(cmd)
 	{
+		int	i = 0;
 		while(cmd->args[i])
 		{
 			free(cmd->args[i]);
@@ -69,6 +70,8 @@ t_cmd	*get_cmd(t_cmd *cmd, char **av, int n, int type)
 	new_cmd->prev = cmd;
 	new_cmd->next = NULL;
 	new_cmd->type = type;
+	if (cmd != NULL)
+		cmd->next = new_cmd;
 	while (i < n)
 	{
 		new_cmd->args[i] = strdup(av[i]);
